@@ -19,18 +19,16 @@ func (r *UserRepo) InsertUser(usr *model.User) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return result, nil
+	return result.InsertedID, nil
 }
 
-func (r *UserRepo) FindUserByID(Id string) (*model.User, error) {
-
-	var usr model.User
-	err := r.MongoCollection.FindOne(context.Background(),
-		bson.D{{Key: "user_id", Value: Id}}).Decode(&usr)
-	if err != nil {
-		return nil, err
-	}
-	return &usr, nil
+func (r *UserRepo) FindUserByID(userID string) (*model.User, error) {
+    var user model.User
+    err := r.MongoCollection.FindOne(context.TODO(), bson.M{"user_id": userID}).Decode(&user)
+    if err != nil {
+        return nil, err
+    }
+    return &user, nil
 }
 
 func (r *UserRepo) GetAllUsers() ([]model.User, error) {
